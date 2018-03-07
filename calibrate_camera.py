@@ -74,12 +74,31 @@ def calibrate_camera():
 
 	return mtx, dist
 
+def calibrate_zed():
+	fx = 701.983
+	fy = 701.983
+	cx = 672.903
+	cy = 335.993
+	k1 = -0.172415
+	k2 = 0.0247573
+
+	mat = [[fx, 0, cx], [0, fy, cy], [0, 0, 1]]
+	cv_mat = np.array(mat)
+
+	dist = [k1, k2, 0, 0, 0]
+	cv_dist = np.array(dist)
+	return  cv_mat, cv_dist
 
 if __name__ == '__main__':
 	mtx, dist = calibrate_camera()
 	save_dict = {'mtx': mtx, 'dist': dist}
 	with open('calibrate_camera.p', 'wb') as f:
 		pickle.dump(save_dict, f)
+
+	mtx1,dist1 = calibrate_zed()
+	save_zed = {'mtx': mtx1, 'dist': dist1}
+	with open('calibrate_zed.p', 'wb') as f:
+		pickle.dump(save_zed, f)
 
 	# Undistort example calibration image
 	img = mpimg.imread('camera_cal/calibration5.jpg')

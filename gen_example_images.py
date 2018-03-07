@@ -13,16 +13,16 @@ from line_fit import line_fit, viz2, calc_curve, final_viz
 
 
 # Read camera calibration coefficients
-with open('calibrate_camera.p', 'rb') as f:
+with open('calibrate_zed.p', 'rb') as f: #changed
 	save_dict = pickle.load(f)
 mtx = save_dict['mtx']
 dist = save_dict['dist']
 
 # Create example pipeline images for all test images
-image_files = os.listdir('test_images')
+image_files = os.listdir('zed_images') #changed
 for image_file in image_files:
 	out_image_file = image_file.split('.')[0] + '.png'  # write to png format
-	img = mpimg.imread('test_images/' + image_file)
+	img = mpimg.imread('zed_images/' + image_file) #changed
 
 	# Undistort image
 	img = cv2.undistort(img, mtx, dist, None, mtx)
@@ -30,14 +30,15 @@ for image_file in image_files:
 	plt.savefig('example_images/undistort_' + out_image_file)
 
 	# Thresholded binary image
-	img, abs_bin, mag_bin, dir_bin, hls_bin = combined_thresh(img)
+	'''img, abs_bin, mag_bin, dir_bin, hls_bin = combined_thresh(img)
 	plt.imshow(img, cmap='gray', vmin=0, vmax=1)
-	plt.savefig('example_images/binary_' + out_image_file)
+	plt.savefig('example_images/binary_' + out_image_file)'''
 
 	# Perspective transform
 	img, binary_unwarped, m, m_inv = perspective_transform(img)
 	plt.imshow(img, cmap='gray', vmin=0, vmax=1)
 	plt.savefig('example_images/warped_' + out_image_file)
+	print('Saved warped')
 
 	# Polynomial fit
 	ret = line_fit(img)
@@ -52,7 +53,7 @@ for image_file in image_files:
 
 	# Do full annotation on original image
 	# Code is the same as in 'line_fit_video.py'
-	orig = mpimg.imread('test_images/' + image_file)
+	orig = mpimg.imread('zed_images/' + image_file)
 	undist = cv2.undistort(orig, mtx, dist, None, mtx)
 	left_curve, right_curve = calc_curve(left_lane_inds, right_lane_inds, nonzerox, nonzeroy)
 

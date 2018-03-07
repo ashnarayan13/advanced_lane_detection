@@ -13,15 +13,15 @@ def perspective_transform(img):
 	img_size = (img.shape[1], img.shape[0])
 
 	src = np.float32(
-		[[200, 720],
-		[1100, 720],
-		[595, 450],
-		[685, 450]])
+		[[14, 508],
+		[1120, 568],
+		[541, 411],
+		[787, 403]])
 	dst = np.float32(
-		[[300, 720],
-		[980, 720],
-		[300, 0],
-		[980, 0]])
+		[[300, 0],
+		[980, 0],
+		[300, 720],
+		[980, 720]])
 
 	m = cv2.getPerspectiveTransform(src, dst)
 	m_inv = cv2.getPerspectiveTransform(dst, src)
